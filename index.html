@@ -22,27 +22,40 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             font-size: 22px;
             background-color: #f4f4f4;
-            line-height: 1.75;
             margin: 0;
             padding: 0 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            line-height: 1.5;
         }
 
-        .hidden {
-            display: none;
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .main-output {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        button:hover {
+            background-color: #357ABD;
         }
 
         h1 {
-            font-size: 2.5em;
-            margin: 0 0 20px;
+            /* font-size: 3; */
+            margin: 20px 0;
             color: #4A90E2;
+            line-height: 1;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin: 20px;
+            color: #333;
         }
 
         form {
@@ -65,57 +78,80 @@
             margin-bottom: 20px;
         }
 
-        button {
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 15px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #357ABD;
-        }
-
-        .main-output {
-            margin-top: 30px;
-            width: 100%;
-        }
-
-        .version-area {
+        .section-output {
             background: #e9ecef;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            margin: 0 0 20px;
+            padding: 20px;
         }
 
-        h2 {
-            font-size: 1.5em;
-            margin: 20px;
-            color: #333;
+        @media only screen and (max-width: 750px) {
+            .section-output  {
+                padding: 20px 0 0;
+            }
+
+            .section-output > h2 {
+                padding: 0;
+                text-align: center;
+            }
         }
 
-        .output {
+        .section-output > h2 {
+            margin: 0;
+            padding: 0 0 20px;
+        }
+
+        .section-output__output {
             background: white;
             border: 1px solid #ccc;
             border-radius: 4px;
-            padding: 10px;
-            min-height: 50px;
+            padding: 20px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+
+            counter-reset: section1 section2;
         }
 
-        .attribution {
+        .section-output__output p {
+            margin: 0;
+        }
+
+        @media only screen and (max-width: 750px) {
+            .section-output__output  {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-output__output > p:nth-child(odd):before {
+            counter-increment: section1;
+            content: counter(section1) ". ";
+        }
+
+        .section-output__output > p:nth-child(even):before {
+            counter-increment: section2;
+            content: counter(section2) ". ";
+        }
+
+        .section-white {
             background: white; /* Same background as the form */
             border-radius: 8px; /* Same border radius as the form */
             color: #777; /* Slightly lighter color for attribution text */
             margin: 0 0 20px;
-            width: 100%; /* Full width */
+            padding: 20px;
         }
 
-        .attribution > p {
+        .section-white > ul {
+            margin: 0 20px 20px;
+        }
+
+        .section-white > p {
             padding: 0 20px;
+        }
+
+        .hidden {
+            display: none;
         }
 
 
@@ -185,26 +221,22 @@ Hé bien! dansez maintenant.
         </div>
     </form>
 
-    <div class="hidden">
-        <div class="main-output">
-            <div class="version-area">
-                <h2>Version originale</h2>
-                <div class="output" id="output-original"></div>
-            </div>
+    <div class="hidden section-output">
+        <h2>Traduction</h2>
 
-            <div class="version-area">
-                <h2>Traduction</h2>
-                <div class="output" id="output-translated"></div>
-            </div>
+        <div class="section-white">
+            <button id="hide-numbers">Retirer la numérotation</button> <button id="hide-source">Cacher le texte source</button>
         </div>
+
+        <div class="section-output__output " id="output"></div>
     </div>
 
-    <div class="attribution">
+    <div class="section-white">
         <h2>Fonctionnement</h2>
 
         <ul>
             <li>Le traducteur est un outil <em>front-end</em>. Cela signifie que le code source est visible par tous et que son exécution se fait sur l'ordinateur de l'utilisateur (moins demandant en bande passante pour l'hébergeur).</li>
-            <li>Le traducteur remplace les mots et les expressions qu'il trouve. Il n'est pas en mesure d'évaluer le contexte. Ainsi, il ne traduira que d'une seule et même manière <i>fort</i>, que le mot soit utilisé dans «&nbsp;il est fort&nbsp;», «&nbsp;c'est fort bien dit&nbsp;» ou «&nbsp;ce fort est imprenable&nbsp;».</li>
+            <li>Le traducteur remplace les mots et les expressions qu'il trouve. Il n'est pas en mesure d'évaluer le contexte. Ainsi, il ne traduira que d'une seule et même manière <i>fort</i>, que le mot soit utilisé dans «&nbsp;il est fort&nbsp;», «&nbsp;c'est fort bien dit&nbsp;» ou «&nbsp;ce fort est imprenable&nbsp;» si on lui donne une équivalence pour <em>fort</em> plutôt que les différentes expressions énumérées qui le comportent.</li>
             <li>Un mot peut ne pas être traduit dans toutes ses formes si on ne les lui fournit pas toutes. Par exemple:
                 <ul>
                     <li><em>Abeille</em> et <em>abeilles</em> sont deux formes.</li>
@@ -216,14 +248,14 @@ Hé bien! dansez maintenant.
         </ul>
     </div>
 
-    <div class="attribution">
+    <div class="section-white">
         <h2>Redistribution</h2>
 
         <p>La redistribution des traductions produites à des fins non lucratives avec <strong>Le traducteur patoisant normand-français</strong> est permise. Les données lexicales sont la propriété de Magene et le programme produisant les traductions celle de <a href="https://parlurequebec.com" target="_blank">ParlureQuébec.com</a>.</p>
     </div>
 
     <script>
-        function replaceText(textContent, area, replace = true) {
+        function replaceText(textContent, replace = true) {
             // prepare text
             textContent = textContent.replace(/\n/g, "<br>");
             textContent = textContent.replace("’", "'");
@@ -271,30 +303,106 @@ Hé bien! dansez maintenant.
             });
 
             // Join the array back into a string
-            let newText = wordsArray.join('');
+            return newText = wordsArray.join('');
 
             // Update the HTML content
-            area.innerHTML = newText;
+            // area.innerHTML = newText;
+        }
+
+        function hideNumbers () {
+            // Create a new style element to override the existing CSS
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .section-output__output > p:nth-child(odd):before,
+                .section-output__output > p:nth-child(even):before {
+                    content: ''; /* Remove the content */
+                    counter-increment: none; /* Disable counter increment */
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function hideSourceText () {
+            // hide all paragraphs
+            const oddParagraphs = document.querySelectorAll('.section-output__output > p:nth-child(odd)');
+            oddParagraphs.forEach(paragraph => {
+                paragraph.style.display = 'none';
+            });
+
+            // display content on just one column
+            document.querySelector('#output').style.gridTemplateColumns = "1fr";
+        }
+
+        function formatParagraphs(string) {
+            // Replace <br><br> with </p><p> and wrap each string with <p> tags
+            const formatString = (str) => {
+                return `<p>${str.replace(/<br>/g, '</p><p>')}</p>`;
+            };
+
+            const formattedString = formatString(string);
+
+            return formattedString;
+        }
+
+        function mergeFormattedStrings(string1, string2) {
+            const formatted1 = formatParagraphs(string1);
+            const formatted2 = formatParagraphs(string2);
+
+            // Split the formatted strings into paragraphs
+            const paragraphs1 = formatted1.split(/<\/p><p>/).map(p => p.replace(/<\/?p>/g, '').trim());
+            const paragraphs2 = formatted2.split(/<\/p><p>/).map(p => p.replace(/<\/?p>/g, '').trim());
+
+            const mergedParagraphs = [];
+            const maxLength = Math.max(paragraphs1.length, paragraphs2.length);
+
+            // Alternate paragraphs from both arrays
+            for (let i = 0; i < maxLength; i++) {
+                if (i < paragraphs1.length && paragraphs1[i]) { // Check if not empty
+                    mergedParagraphs.push(`<p>${paragraphs1[i]}</p>`);
+                }
+                if (i < paragraphs2.length && paragraphs2[i]) { // Check if not empty
+                    mergedParagraphs.push(`<p>${paragraphs2[i]}</p>`);
+                }
+            }
+
+            return mergedParagraphs.join('');
         }
 
         function main() {
             // show output
             const hiddenSection = document.querySelector(".hidden");
-            hiddenSection.classList.remove("hidden");
+            
+            if (hiddenSection) {
+                hiddenSection.classList.remove("hidden");
+            }
 
             // translate content
             const textContent = text.value;
-            let outputOriginalArea = document.querySelector("#output-original");
-            let outputTranslatedArea = document.querySelector("#output-translated");
+            let outputArea = document.querySelector("#output");
 
-            replaceText(textContent, outputOriginalArea, false);
-            replaceText(textContent, outputTranslatedArea, true);
+            const oldText = replaceText(textContent, false);
+            const newText = replaceText(textContent, true);
+
+            const formattedOld = formatParagraphs(oldText);
+            const formattedNew = formatParagraphs(newText);
+
+            const mergedStrings = mergeFormattedStrings(formattedOld, formattedNew);
+
+            outputArea.innerHTML = mergedStrings;
         }
 
         // gestionnaire d'événement
         document.querySelector("button[type='submit']").addEventListener("click", function (e) {
             e.preventDefault(e);
             main();
+        });
+
+        document.querySelector("#hide-source").addEventListener("click", function (e) {
+            hideSourceText();
+        });
+
+        document.querySelector("#hide-numbers").addEventListener("click", function (e) {
+            hideNumbers();
         });
 
         const lexicon = [
