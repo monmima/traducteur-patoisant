@@ -20,7 +20,7 @@ Un simple programme front-end qui traduit du français au normand
 
 - Faire du ménage dans le lexique.
     - Il y a des traduction vides ("")
-    - La présence de virgules indique souvent plusieurs mots possibles pour la traduction ou la source. À restructurer: une nouvelle ligne pour chaque mot à traduit, et une virgule avec des guillemets anglais pour chaque traduction possible.
+    - La présence de virgules indique souvent plusieurs mots possibles pour la traduction ou la source. À restructurer: une nouvelle ligne pour chaque mot traduit, et une virgule avec des guillemets anglais pour chaque traduction possible.
 
 ## Ce qui ne peut pas se régler
 
