@@ -260,57 +260,35 @@ Hé bien! dansez maintenant.
 
     <script>
         function replaceText(textContent, replace = true) {
-            // prepare text
+            // Prepare text
             textContent = textContent.replace(/\n/g, "<br>");
             textContent = textContent.replace("’", "'");
 
-            // first pass: replace phrases only if the phrase contains a space
-            for (let element of lexicon) {
-                if (element[0].includes(' ')) { // Check if the phrase contains a space
-                    // Create a regex for phrases that may contain spaces
-                    const phraseRegex = new RegExp(`${element[0]}`, 'gi'); // Match whole phrases
-                    textContent = textContent.replace(phraseRegex, (match) => {
-                        // Check if the matched phrase starts with an uppercase letter
+            // Create a combined regex pattern for phrases and individual words
+            const combinedPattern = lexicon.map(element => {
+                return element[0].includes(' ') ? `(${element[0]})` : `\\b(${element[0]})\\b`; // Handle phrases with spaces
+            }).join('|'); // Join with OR operator
+
+            // Create a regex for matching phrases and words, case insensitive
+            const regex = new RegExp(combinedPattern, 'gi');
+
+            // Replace function
+            textContent = textContent.replace(regex, (match) => {
+                for (let element of lexicon) {
+                    if (match.toLowerCase() === element[0].toLowerCase()) {
                         const isCapitalized = match[0] === match[0].toUpperCase();
                         const replacementWord = replace ? element[1] : element[0];
-
-                        // Capitalize the replacement word if the original phrase was capitalized
-                        const finalPhrase = isCapitalized ? 
-                            replacementWord.charAt(0).toUpperCase() + replacementWord.slice(1) : 
-                            replacementWord;
-
-                        return `<b>${finalPhrase}</b>`; // Return the bolded phrase
-                    });
-                }
-            }
-            
-            // Split the text into an array of words, considering punctuation and spaces
-            let wordsArray = textContent.split(/(\s+|[.,!?'’;:()=])/); // Split on spaces and punctuation
-
-            // second pass: replace individual words
-            wordsArray = wordsArray.map(word => {
-                for (let element of lexicon) {
-                    if (word.toLowerCase() === element[0].toLowerCase()) {
-                        // Check if the original word starts with an uppercase letter
-                        const isCapitalized = word[0] === word[0].toUpperCase();
-                        const replacementWord = replace ? element[1] : element[0];
-
-                        // Capitalize the replacement word if the original word was capitalized
                         const finalWord = isCapitalized ? 
                             replacementWord.charAt(0).toUpperCase() + replacementWord.slice(1) : 
                             replacementWord;
 
-                        return `<b>${finalWord}</b>`; // Replace with bolded word based on replace flag
+                        return `<b>${finalWord}</b>`; // Return the bolded word or phrase
                     }
                 }
-                return word; // Return the original word if no match
+                return match; // Return the original match if no replacement is found
             });
 
-            // Join the array back into a string
-            return newText = wordsArray.join('');
-
-            // Update the HTML content
-            // area.innerHTML = newText;
+            return textContent; // Return the modified text content
         }
 
         function hideNumbers () {
@@ -411,6 +389,7 @@ Hé bien! dansez maintenant.
         });
 
        const lexicon = [
+            ["avoir faim", "avei la fale basse"],
             ["autre", "âote"],
             ["autres", "âotes"],
             ["à quatre pattes", "à catouns"],
@@ -1925,7 +1904,6 @@ Hé bien! dansez maintenant.
             ["exploitation agricole", "faisaunche-vali"],
             ["le bien que l'on possède", "fait"],
             ["estomac", "fale"],
-            ["avoir faim", "avei la fale basse"],
             ["famille", "famile"],
             ["moisissure anormale sur le cidre, dans un tonneau presque vide", "fanette, flleur"],
             ["duvet (poil)", "fâofollet"],
