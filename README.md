@@ -6,7 +6,6 @@ Un simple programme front-end qui traduit du français au normand
 
 ### Améliorations informatiques
 
-- Quand un paragraphe commence par un terme traduisible (tout premier mot), il n'est pas traduit.
 - Envisager la possibilité d'activier/désactiver le gras sur les mots.
 - Rendre aléatoire la sélection d'une traduction quand plusieurs existent. Par exemple, **abeille** peut se traduire par **avette** ou par **mâoque à mié**
 
